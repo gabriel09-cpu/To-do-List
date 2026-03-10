@@ -1,0 +1,48 @@
+import { useStorage } from './hooks/useStorage';
+
+export function TaskList() {
+  const { getItem, saveItem, removeItem } = useStorage();
+  const [tasks, setTasks] = useState([]);
+
+  // Carregar tarefas ao iniciar
+  useEffect(() => {
+    loadTasks();
+  }, []);
+
+  const loadTasks = async () => {
+    const savedTasks = await getItem('tasks');
+    setTasks(savedTasks);
+  };
+
+  // Adicionar nova tarefa
+  const addTask = async (taskTitle) => {
+    const newTask = {
+      id: Date.now(),
+      title: taskTitle,
+      completed: false,
+      createdAt: new Date()
+    };
+    await saveItem('tasks', newTask);
+    setTasks([...tasks, newTask]);
+  };
+
+  // Deletar tarefa
+  const deleteTask = async (task) => {
+    await removeItem('tasks', task);
+    setTasks(tasks.filter(t => t.id !== task.id));
+  };
+
+  return (
+    <View>
+      <FlatList
+        data={tasks}
+        renderItem={({ item }) => (
+          <TaskItem
+            task={item}
+            onDelete={() => deleteTask(item)}
+          />
+        )}
+      />
+    </View>
+  );
+}

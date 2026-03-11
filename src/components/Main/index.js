@@ -5,30 +5,35 @@ import Ionicons from "@react-native-vector-icons/ionicons";
 import { useState } from "react";
 import useStorage from "../../hooks/useStorage";
 
-export default function App() {
+export default function Main() {
   const storage = useStorage();
   const [modalVisible, setModalVisible] = useState(false);
-  const [tasks, setTaks] = useState([]);
+  const [task, setTask] = useState("");
+  const [tasks, setTasks] = useState([]);
+  
 
   const addTask = async () => {
-    if (tasks.trim() === "") return;
+    if (task.trim() === "") return;
 
     const newTasks = {
       id: Date.now(),
-      tasks: tasks,
+      titles: task,
       date: new Date().toLocaleDateString(),
+      done: false,
     };
 
     const updatedTasks = [...tasks, newTasks];
 
-    setTaks(updatedTasks);
-    await storage.save("tasks", newTasks);
+    setTasks(updatedTasks);
+    await storage.save("tasks", updatedTasks);
 
-    setTaks("");
+    setTask("");
     setModalVisible(false);
   };
 
   return (
+
+      
     <View style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>Lista de Tarefas</Text>
@@ -52,7 +57,11 @@ export default function App() {
         <View style={styles.modalContainer}>
           <View style={styles.modalBox}>
             <Text style={styles.modalText}>Nova Tarefa</Text>
-            <TextInput style={styles.textInput} placeholder="Tarefa" />
+            <TextInput 
+            style={styles.textInput} 
+            placeholder="Tarefa" 
+            value={task}
+            onChangeText={setTask}/>
 
             <View style={styles.buttonArea}>
               <TouchableOpacity
@@ -62,7 +71,7 @@ export default function App() {
                 <Text style={styles.buttonText}>Fechar</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles.buttonSave, styles.button]}>
+              <TouchableOpacity style={[styles.buttonSave, styles.button]} onPress={addTask}>
                 <Text>Salvar Tarefa</Text>
               </TouchableOpacity>
             </View>
@@ -70,5 +79,7 @@ export default function App() {
         </View>
       </Modal>
     </View>
+
+    
   );
 }

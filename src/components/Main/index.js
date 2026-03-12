@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { Text, View, TouchableOpacity, Modal, TextInput } from "react-native";
 import { styles } from "./styles";
-import Ionicons from "@react-native-vector-icons/ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import useStorage from "../../hooks/useStorage";
 
@@ -53,7 +53,7 @@ export default function Main() {
         </TouchableOpacity>
       </View>
 
-      <Modal visible={modalVisible} transparent={true} animationType="slide">
+      <Modal visible={modalVisible} transparent={true} animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalBox}>
             <Text style={styles.modalText}>Nova Tarefa</Text>

@@ -1,48 +1,70 @@
 import { useStorage } from './hooks/useStorage';
 
-export function TaskList() {
-  const { getItem, saveItem, removeItem } = useStorage();
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import { useEffect, useState } from "react";
+import Ionicons from "@react-native-vector-icons/ionicons";
+import useStorage from "../../hooks/useStorage";
+
+export default function Tasks() {
+
+  const storage = useStorage();
+
   const [tasks, setTasks] = useState([]);
 
-  // Carregar tarefas ao iniciar
   useEffect(() => {
     loadTasks();
   }, []);
 
-  const loadTasks = async () => {
-    const savedTasks = await getItem('tasks');
-    setTasks(savedTasks);
+  async function loadTasks(){
+    const storedTasks = await storage.get("tasks");
+    setTasks(storedTasks);
+  }
+
+  const deleteTask = async (id) => {
+
+    const filtered = tasks.filter(task => task.id !== id);
+
+    setTasks(filtered);
+
+    await storage.save("tasks", filtered);
   };
 
-  // Adicionar nova tarefa
-  const addTask = async (taskTitle) => {
-    const newTask = {
-      id: Date.now(),
-      title: taskTitle,
-      completed: false,
-      createdAt: new Date()
-    };
-    await saveItem('tasks', newTask);
-    setTasks([...tasks, newTask]);
+  const completeTask = async (id) => {
+
+    const updated = tasks.map(task =>
+      task.id === id ? { ...task, done: true } : task
+    );
+
+    setTasks(updated);
+
+    await storage.save("tasks", updated);
   };
 
-  // Deletar tarefa
-  const deleteTask = async (task) => {
-    await removeItem('tasks', task);
-    setTasks(tasks.filter(t => t.id !== task.id));
-  };
+  const pendingTasks = tasks.filter(task => !task.done);
 
   return (
-    <View>
-      <FlatList
-        data={tasks}
-        renderItem={({ item }) => (
-          <TaskItem
-            task={item}
-            onDelete={() => deleteTask(item)}
-          />
-        )}
-      />
-    </View>
+    <FlatList
+      data={pendingTasks}
+      keyExtractor={(item) => String(item.id)}
+      renderItem={({ item }) => (
+
+        <View style={{flexDirection:"row", justifyContent:"space-between", padding:10}}>
+
+          {/* Botão excluir */}
+          <TouchableOpacity onPress={() => deleteTask(item.id)}>
+            <Ionicons name="trash" size={24} color="red"/>
+          </TouchableOpacity>
+
+          <Text>{item.title}</Text>
+
+          {/* Checkbox */}
+          <TouchableOpacity onPress={() => completeTask(item.id)}>
+            <Ionicons name="checkbox-outline" size={24}/>
+          </TouchableOpacity>
+
+        </View>
+
+      )}
+    />
   );
 }

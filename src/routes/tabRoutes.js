@@ -4,7 +4,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Main from "../components/Main";
 import Tasks from "../components/Tasks";
 import Done from "../components/Done";
-
 const Tab = createBottomTabNavigator();
 
 export default function TabRoutes() {

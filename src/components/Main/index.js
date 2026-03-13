@@ -1,28 +1,39 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, View, TouchableOpacity, Modal, TextInput } from "react-native";
+import { Text, View, TouchableOpacity, Modal, TextInput, Image } from "react-native";
 import { styles } from "./styles";
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useStorage from "../../hooks/useStorage";
+import Logo from "../../../assets/gerenciamento-de-projetos.png"
 
 export default function Main() {
+  
   const storage = useStorage();
+
   const [modalVisible, setModalVisible] = useState(false);
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
-  
+
+  useEffect(() => {
+    loadTasks();
+  }, []);
+
+  async function loadTasks(){
+    const storedTasks = await storage.get("tasks");
+    setTasks(storedTasks || []);
+  }
 
   const addTask = async () => {
     if (task.trim() === "") return;
 
-    const newTasks = {
+    const newTask = {
       id: Date.now(),
-      titles: task,
+      title: task,
       date: new Date().toLocaleDateString(),
       done: false,
     };
 
-    const updatedTasks = [...tasks, newTasks];
+    const updatedTasks = [...tasks, newTask];
 
     setTasks(updatedTasks);
     await storage.save("tasks", updatedTasks);
@@ -38,8 +49,10 @@ export default function Main() {
       <View style={styles.content}>
         <Text style={styles.title}>Lista de Tarefas</Text>
       </View>
-
-      <View style={styles.newtask}>
+      <View style={styles.imageLogo}>
+        <Image source={Logo} style={styles.logo}/>
+      </View>
+      <View style={styles.newTask}>
         <TouchableOpacity
           style={styles.addbutton}
           onPress={() => setModalVisible(true)}
@@ -48,7 +61,7 @@ export default function Main() {
             name="add"
             size={60}
             color={"#000"}
-            style={styles.addbuttontext}
+            style={styles.addButtonText}
           />
         </TouchableOpacity>
       </View>

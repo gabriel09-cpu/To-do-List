@@ -3,22 +3,30 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     backgroundColor: "#5e97ff",
+    paddingTop: 60,
+    paddingHorizontal: 20,
   },
+
   content: {
-    top: 60,
+    alignItems: "flex-start",
   },
 
   title: {
-    fontSize: 35,
+    fontSize: 26,
     fontWeight: "bold",
+    color: "#ffffff",
+    marginBottom: 20,
   },
 
   addbutton: {
+    position: "absolute",
+    bottom: 40,
+    right: 30,
     backgroundColor: "#fff",
     borderRadius: 20,
-    top: 580,
+    padding: 12,
+    elevation: 6,
   },
 
   modalContainer: {
@@ -46,37 +54,46 @@ export const styles = StyleSheet.create({
   },
 
   buttonArea: {
-        flexDirection: "row",
-        width: "90%",
-        marginTop: 8,
-        alignItems: "center",
-        justifyContent: "center",
-    },
+    flexDirection: "row",
+    width: "90%",
+    marginTop: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
-    buttonArea: {
-        flexDirection: "row",
-        width: "90%",
-        marginTop: 8,
-        alignItems: "center",
-        justifyContent: "center",
-    },
+  button: {
+    flex: 1,
+    alignItems: "center",
+    marginTop: 14,
+    marginBottom: 14,
+    padding: 8,
+  },
 
-    button: {
-        flex: 1,
-        alignItems: "center",
-        marginTop: 14,
-        marginBottom: 14,
-        padding: 8,
-    },
+  buttonSave: {
+    backgroundColor: "#00fa60",
+    borderRadius: 8,
+  },
 
-    buttonSave: {
-        backgroundColor: "#00fa60",
-        borderRadius: 8,
-    },
+  textInput: {
+    backgroundColor: "#a8a8a879",
+    width: 300,
+    borderRadius: 16,
+  },
 
-    textInput: {
-      backgroundColor: "#a8a8a879",
-      width: 300,
-      borderRadius: 16,
-    }
+  newTask: {
+    flex: 1,
+    alignItems: "center",
+  },
+
+  imageLogo: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20
+  },
+
+  logo: {
+    width: 300,
+    height: 300,
+    resizeMode: "contain",
+  },
 });

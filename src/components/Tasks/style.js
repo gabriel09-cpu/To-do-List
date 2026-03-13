@@ -34,6 +34,11 @@ export const styles = StyleSheet.create({
 
     borderRadius:16,
 
+    shadowColor:"#000",
+    shadowOffset:{ width:0, height:4 },
+    shadowOpacity:0.08,
+    shadowRadius:6,
+
     elevation:4
   },
 
@@ -42,8 +47,7 @@ export const styles = StyleSheet.create({
     fontSize:17,
     fontWeight:"600",
     color:"#2D3436",
-    marginHorizontal:12,
-    textDecorationLine:"line-through"
+    marginHorizontal:12
   },
 
   deleteTask:{
@@ -52,8 +56,8 @@ export const styles = StyleSheet.create({
     borderRadius:10
   },
 
-  undoTask:{
-    backgroundColor:"#E3F2FD",
+  checkTask:{
+    backgroundColor:"#EAF7EF",
     padding:8,
     borderRadius:10
   }
